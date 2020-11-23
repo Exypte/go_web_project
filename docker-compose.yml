@@ -1,8 +1,9 @@
 version: "3.8"
 services: 
-  web:
-    build: .
-
+  web_go_app:
+    build: ./microservice_user
+    ports:
+      - 8080:8080
   db:
     image: postgres
     restart: always
@@ -18,4 +19,4 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - 8180:8080

@@ -4,17 +4,8 @@ info:
   description: Test de OpenApi
   version: 0.1.9
 servers:
-- url: http://{customerId}.example.com:{port}/v1
+- url: localhost:8080
   description: Mon server de test
-  variables:
-    customerId:
-      description: Customer ID assigned by the service provider
-      default: demo
-    port:
-      default: "443"
-      enum:
-      - "443"
-      - "8443"
 paths:
   /users:
     get:
