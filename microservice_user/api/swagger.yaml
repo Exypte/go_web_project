@@ -1,0 +1,91 @@
+openapi: 3.0.0
+info:
+  title: Sample API
+  description: Test de OpenApi
+  version: 0.1.9
+servers:
+- url: http://{customerId}.example.com:{port}/v1
+  description: Mon server de test
+  variables:
+    customerId:
+      description: Customer ID assigned by the service provider
+      default: demo
+    port:
+      default: "443"
+      enum:
+      - "443"
+      - "8443"
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: Optional extended description in CommonMark or HTML.
+      responses:
+        "200":
+          description: A JSON array of user names
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+                x-content-type: application/json
+  /user/{id}:
+    get:
+      summary: Returns a user by ID.
+      parameters:
+      - name: id
+        in: path
+        description: Parameter description in CommonMark or HTML.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: The specified user ID is invalid (not a number).
+        "404":
+          description: A user with the specified ID was not found.
+        default:
+          description: Unexpected error
+  /usersCreate:
+    post:
+      summary: Creates a user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        "201":
+          description: Created
+components:
+  schemas:
+    User:
+      required:
+      - address
+      - age
+      - id
+      - name
+      - salary
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        address:
+          type: string
+        salary:
+          type: number
+      example:
+        address: address
+        name: name
+        id: 0
+        salary: 1.46581298050294517310021547018550336360931396484375
+        age: 6

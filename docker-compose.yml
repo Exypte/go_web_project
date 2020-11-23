@@ -1,0 +1,21 @@
+version: "3.8"
+services: 
+  web:
+    build: .
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: mydb
+    ports:
+      - 5432:5432
+    volumes: 
+      - ./data_dump:/docker-entrypoint-initdb.d
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
