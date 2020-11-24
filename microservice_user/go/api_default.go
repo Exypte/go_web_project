@@ -10,20 +10,62 @@ package swagger
 
 import (
 	"net/http"
+	"fmt"
+	"encoding/json"
+	"strconv"
+
+	"github.com/gorilla/mux"
 )
 
-func UserIdGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+func CompanyIdGet(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+
+	if err != nil {
+        respondWithError(w, http.StatusBadRequest, "Invalid product ID")
+        return
+	}
+
+	company, err := GetCompany(GetDB(), id)
+
+	if err != nil{
+        respondWithError(w, http.StatusInternalServerError, err.Error())
+        return
+	}
+
+	respondWithJSON(w, http.StatusOK, company)
 }
 
-func UsersCreatePost(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.WriteHeader(http.StatusOK)
+func CompanyCreatePost(w http.ResponseWriter, r *http.Request) {
+	err := InsertCompany(GetDB())
+
+	if err != nil{
+        respondWithError(w, http.StatusInternalServerError, err.Error())
+        return
+	}
+
+	http.Redirect(w, r, "/companys", 301)
 }
 
-func UsersGet(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	Connect()
-	w.WriteHeader(http.StatusOK)
+func CompanysGet(w http.ResponseWriter, r *http.Request) {
+	companys, err := GetCompanys(GetDB())
+
+	if err != nil{
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+	}
+
+    respondWithJSON(w, http.StatusOK, companys)
+}
+
+func respondWithError(w http.ResponseWriter, code int, message string) {
+	//respondWithJSON(w, code, map[string]string{"error": message})
+	fmt.Fprintf(w, message)
+}
+
+func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+    response, _ := json.Marshal(payload)
+
+    w.Header().Set("Content-Type", "application/json")
+    w.WriteHeader(code)
+    w.Write(response)
 }

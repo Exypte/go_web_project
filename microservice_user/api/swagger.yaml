@@ -7,21 +7,21 @@ servers:
 - url: localhost:8080
   description: Mon server de test
 paths:
-  /users:
+  /companys:
     get:
-      summary: Returns a list of users.
+      summary: Returns a list of companys.
       description: Optional extended description in CommonMark or HTML.
       responses:
         "200":
-          description: A JSON array of user names
+          description: A JSON array of company
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/Company'
                 x-content-type: application/json
-  /user/{id}:
+  /company/{id}:
     get:
       summary: Returns a user by ID.
       parameters:
@@ -32,31 +32,31 @@ paths:
         style: simple
         explode: false
         schema:
-          $ref: '#/components/schemas/User'
+          $ref: '#/components/schemas/Company'
       responses:
         "200":
           description: OK
-        "400":
-          description: The specified user ID is invalid (not a number).
-        "404":
-          description: A user with the specified ID was not found.
-        default:
-          description: Unexpected error
-  /usersCreate:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Company'
+                x-content-type: application/json
+  /companyCreate:
     post:
-      summary: Creates a user.
+      summary: Creates a Company.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Company'
         required: true
       responses:
-        "201":
-          description: Created
+        "301":
+          description: Redirect
 components:
   schemas:
-    User:
+    Company:
       required:
       - address
       - age
@@ -74,9 +74,3 @@ components:
           type: string
         salary:
           type: number
-      example:
-        address: address
-        name: name
-        id: 0
-        salary: 1.46581298050294517310021547018550336360931396484375
-        age: 6

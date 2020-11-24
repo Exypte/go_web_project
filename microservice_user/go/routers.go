@@ -43,7 +43,16 @@ func NewRouter() *mux.Router {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello World!")
+	page := "<h1>My very small API</h1>" +  
+			"<p>Index -- <a>http://localhost:8080/</a></p>" +
+			"<p>Acces to every data :</p>"+
+			"<p>Companys -- <a href=http://localhost:8080/companys>Companys</a></p>" +
+			"<p>Acces to one data :</p>"+
+			"<p>Company -- <a href=http://localhost:8080/company/1>Company</a></p>" +
+			"<p>Add a predifine data :</p>"+
+			"<p>CompanyCreate -- <a href=http://localhost:8080/companyCreate>CompanyCreate</a></p>"
+
+	fmt.Fprintf(w, page)
 }
 
 var routes = Routes{
@@ -55,23 +64,23 @@ var routes = Routes{
 	},
 
 	Route{
-		"UserIdGet",
+		"CompanyIdGet",
 		strings.ToUpper("Get"),
-		"/user/{id}",
-		UserIdGet,
+		"/company/{id}",
+		CompanyIdGet,
 	},
 
 	Route{
-		"UsersCreatePost",
-		strings.ToUpper("Post"),
-		"/usersCreate",
-		UsersCreatePost,
+		"CompanyCreatePost",
+		strings.ToUpper("Get"),
+		"/companyCreate",
+		CompanyCreatePost,
 	},
 
 	Route{
-		"UsersGet",
+		"CompanysGet",
 		strings.ToUpper("Get"),
-		"/users",
-		UsersGet,
+		"/companys",
+		CompanysGet,
 	},
 }

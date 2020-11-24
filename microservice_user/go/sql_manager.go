@@ -1,17 +1,36 @@
 package swagger
 
 import (
+	"fmt"
+	"context"
 	"log"
+
 	"database/sql"
+
 	_ "github.com/lib/pq"
 )
 
-func Connect(){
-	db, err := sql.Open("postgres","postgres://root:pwd@localhost:5432/mydb?sslmode=verify-full")
+var (
+	ctx context.Context
+	db *sql.DB
+)
+
+func Connect(user, password, dbname string) *sql.DB{
+	connectionString := fmt.Sprintf("postgres://%s:%s@db:5432/%s?sslmode=disable", user, password, dbname)
+	
+	var err error
+
+	db, err = sql.Open("postgres", connectionString)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Print("Connection ok")
-	defer db.Close()
+
+	log.Print(connectionString)
+
+	return db
+}
+
+func GetDB() *sql.DB{
+	return db
 }

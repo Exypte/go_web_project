@@ -27,5 +27,7 @@ func main() {
 
 	router := sw.NewRouter()
 
+	sw.Connect("root", "pwd", "mydb")
+
 	log.Fatal(http.ListenAndServe(":8080", router))
 }
