@@ -52,9 +52,22 @@ func GetCompanys(db *sql.DB) ([]Company, error){
 	return companys, nil
 }
 
-func GetCompany(db *sql.DB, id int) (Company, error){
+func GetCompanyById(db *sql.DB, id int) (Company, error){
 
 	row := db.QueryRow("SELECT * FROM company WHERE id=$1", id)
+
+	var c Company 
+
+	if err := row.Scan(&c.Id, &c.Name, &c.Age, &c.Address, &c.Salary); err != nil {
+		return c, err
+	}
+
+	return c, nil
+}
+
+func GetCompanyByName(db *sql.DB, name string) (Company, error){
+
+	row := db.QueryRow("SELECT * FROM company WHERE name=$1", name)
 
 	var c Company 
 

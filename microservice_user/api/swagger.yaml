@@ -42,6 +42,27 @@ paths:
                 items:
                   $ref: '#/components/schemas/Company'
                 x-content-type: application/json
+  /company/{name}:
+    get:
+      summary: Returns a user by name.
+      parameters:
+      - name: name
+        in: path
+        description: Parameter description in CommonMark or HTML.
+        required: true
+        style: simple
+        explode: false
+        schema:
+          $ref: '#/components/schemas/Company'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Company'
+                x-content-type: application/json
   /companyCreate:
     post:
       summary: Creates a Company.

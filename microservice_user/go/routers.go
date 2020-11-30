@@ -83,4 +83,11 @@ var routes = Routes{
 		"/companys",
 		CompanysGet,
 	},
+
+	Route{
+		"CompanyNameGet",
+		strings.ToUpper("Get"),
+		"/company/name/{name}",
+		CompanyNameGet,
+	},
 }

@@ -1,6 +1,6 @@
 version: "3.8"
 services: 
-  web_go_app:
+  microservice_user:
     build: ./microservice_user
     ports:
       - 8080:8080
@@ -22,3 +22,7 @@ services:
     restart: always
     ports:
       - 8180:8080
+  server:
+    build: ./server
+    ports:
+      - 8280:8080

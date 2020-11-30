@@ -10,7 +10,6 @@ package swagger
 
 import (
 	"net/http"
-	"fmt"
 	"encoding/json"
 	"strconv"
 
@@ -26,7 +25,21 @@ func CompanyIdGet(w http.ResponseWriter, r *http.Request) {
         return
 	}
 
-	company, err := GetCompany(GetDB(), id)
+	company, err := GetCompanyById(GetDB(), id)
+
+	if err != nil{
+        respondWithError(w, http.StatusInternalServerError, err.Error())
+        return
+	}
+
+	respondWithJSON(w, http.StatusOK, company)
+}
+
+func CompanyNameGet(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	name := vars["name"]
+
+	company, err := GetCompanyByName(GetDB(), name)
 
 	if err != nil{
         respondWithError(w, http.StatusInternalServerError, err.Error())
@@ -58,8 +71,7 @@ func CompanysGet(w http.ResponseWriter, r *http.Request) {
 }
 
 func respondWithError(w http.ResponseWriter, code int, message string) {
-	//respondWithJSON(w, code, map[string]string{"error": message})
-	fmt.Fprintf(w, message)
+	respondWithJSON(w, code, map[string]string{"error": message})
 }
 
 func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
